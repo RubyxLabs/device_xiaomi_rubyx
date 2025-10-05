@@ -76,7 +76,7 @@ blob_fixups: blob_fixups_user_type = {
      'vendor/lib64/libaaa_ltm.so'): blob_fixup()
         .add_needed('liblog.so'),
     
-    'vendor/lib*/hw/vendor.mediatek.hardware.pq@2.14-impl.so': blob_fixup()
+    'vendor/lib64/hw/vendor.mediatek.hardware.pq@2.14-impl.so': blob_fixup()
         .replace_needed('libutils.so', 'libutils-v32.so')
         .replace_needed('libsensorndkbridge.so', 'android.hardware.sensors@1.0-convert-shared.so'),
     
