@@ -22,6 +22,7 @@
         android:icon="@drawable/ic_dolby" />
 
     <PreferenceCategory
+        android:key="dolby_category_settings"
         android:title="@string/dolby_category_settings">
 
         <Preference

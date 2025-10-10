@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
+import android.x.preference.PreferenceCategory
 import androidx.preference.PreferenceFragment
 import androidx.preference.SwitchPreferenceCompat
 import co.aospa.dolby.xiaomi.DolbyConstants
@@ -52,9 +53,6 @@ class DolbySettingsFragment : PreferenceFragment(),
     private val ieqPref by lazy {
         findPreference<DolbyIeqPreference>(PREF_IEQ)!!
     }
-    private val stereoPref by lazy {
-        findPreference<ListPreference>(PREF_STEREO)!!
-    }
     private val dialoguePref by lazy {
         findPreference<ListPreference>(PREF_DIALOGUE)!!
     }
@@ -73,6 +71,10 @@ class DolbySettingsFragment : PreferenceFragment(),
     private val resetPref by lazy {
         findPreference<Preference>(PREF_RESET)!!
     }
+    private val settingsCategory by lazy {
+        findPreference<PreferenceCategory>("dolby_category_settings")!!
+    }
+    private var stereoPref: ListPreference? = null
 
     private val dolbyController by lazy { DolbyController.getInstance(context) }
     private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
@@ -102,6 +104,12 @@ class DolbySettingsFragment : PreferenceFragment(),
         dlog(TAG, "onCreatePreferences")
         addPreferencesFromResource(R.xml.dolby_settings)
 
+        stereoPref = findPreference<ListPreference>(PREF_STEREO)!!
+        if (!context.getResources().getBoolean(R.bool.dolby_stereo_widening_supported)) {
+            settingsCategory.removePreference(stereoPref!!)
+            stereoPref = null
+        }
+
         val profile = dolbyController.profile
         preferenceManager.preferenceDataStore = DolbyPreferenceStore(context).also {
             it.profile = profile
@@ -118,13 +126,14 @@ class DolbySettingsFragment : PreferenceFragment(),
                 summary = "%s"
                 value = profile.toString()
             } else {
-                summary = context.getString(R.string.dolby_unknown)
+                summary = unknownRes
+                dlog(TAG, "current profile $currentProfile unknown")
             }
         }
 
         hpVirtPref.onPreferenceChangeListener = this
         spkVirtPref.onPreferenceChangeListener = this
-        stereoPref.onPreferenceChangeListener = this
+        stereoPref?.onPreferenceChangeListener = this
         dialoguePref.onPreferenceChangeListener = this
         bassPref.onPreferenceChangeListener = this
         volumePref.onPreferenceChangeListener = this
@@ -231,7 +240,7 @@ class DolbySettingsFragment : PreferenceFragment(),
         volumePref.setEnabled(enable)
         resetPref.setEnabled(enable)
         hpVirtPref.setEnabled(enable && !isOnSpeaker)
-        stereoPref.setEnabled(enable && !isOnSpeaker)
+        stereoPref?.setEnabled(enable && !isOnSpeaker)
         bassPref.setEnabled(enable)
 
         if (!enable) return
@@ -245,6 +254,7 @@ class DolbySettingsFragment : PreferenceFragment(),
                 value = ieqValue.toString()
             } else {
                 summary = unknownRes
+                dlog(TAG, "ieq value $ieqValue unknown")
             }
         }
 
@@ -255,6 +265,7 @@ class DolbySettingsFragment : PreferenceFragment(),
                 value = deValue
             } else {
                 summary = unknownRes
+                dlog(TAG, "dialogue enhancer value $deValue unknown")
             }
         }
 
@@ -264,18 +275,19 @@ class DolbySettingsFragment : PreferenceFragment(),
 
         // below prefs are not enabled on loudspeaker
         if (isOnSpeaker) {
-            stereoPref.summary = headphoneRes
+            stereoPref?.summary = headphoneRes
             hpVirtPref.summary = headphoneRes
             return
         }
 
         val swValue = dolbyController.getStereoWideningAmount(currentProfile).toString()
-        stereoPref.apply {
+        stereoPref?.apply {
             if (entryValues.contains(swValue)) {
                 summary = "%s"
                 value = swValue
             } else {
                 summary = unknownRes
+                dlog(TAG, "stereo widening value $swValue unknown")
             }
         }
 
