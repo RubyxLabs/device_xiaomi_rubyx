@@ -75,6 +75,22 @@
             android:key="dolby_volume"
             android:title="@string/dolby_volume_leveler" />
 
+        <SeekBarPreference
+            android:key="dolby_volume_amount"
+            android:title="@string/dolby_strength"
+            android:dependency="dolby_volume"
+            android:defaultValue="7"
+            android:min="@integer/volume_leveler_min"
+            android:max="@integer/volume_leveler_max"/>
+
+        <SwitchPreferenceCompat
+            android:key="dolby_volume_modeler"
+            android:title="@string/dolby_volume_modeler" />
+
+        <SwitchPreferenceCompat
+            android:key="dolby_audio_optimizer"
+            android:title="@string/dolby_audio_optimizer" />
+
         <Preference
             android:key="dolby_reset"
             android:title="@string/dolby_reset_profile" />

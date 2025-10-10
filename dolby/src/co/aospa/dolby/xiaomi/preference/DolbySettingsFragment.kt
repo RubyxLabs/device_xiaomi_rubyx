@@ -35,6 +35,9 @@ import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_RESET
 import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_SPK_VIRTUALIZER
 import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_STEREO_WIDENING
 import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_VOLUME
+import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_VOLUME_AMOUNT
+import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_VOLUME_MODELER
+import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_AUDIO_OPTIMIZER
 import co.aospa.dolby.xiaomi.DolbyConstants.Companion.dlog
 import co.aospa.dolby.xiaomi.DolbyController
 import co.aospa.dolby.xiaomi.R
@@ -72,6 +75,15 @@ class DolbySettingsFragment : PreferenceFragment(),
     }
     private val volumePref by lazy {
         findPreference<SwitchPreferenceCompat>(PREF_VOLUME)!!
+    }
+    private val volumeAmountPref by lazy {
+        findPreference<SeekBarPreference>(PREF_VOLUME_AMOUNT)!!
+    }
+    private val volumeModelerPref by lazy {
+        findPreference<SwitchPreferenceCompat>(PREF_VOLUME_MODELER)!!
+    }
+    private val audioOptimizerPref by lazy {
+        findPreference<SwitchPreferenceCompat>(PREF_AUDIO_OPTIMIZER)!!
     }
     private val resetPref by lazy {
         findPreference<Preference>(PREF_RESET)!!
@@ -151,6 +163,13 @@ class DolbySettingsFragment : PreferenceFragment(),
         }
         bassPref.onPreferenceChangeListener = this
         volumePref.onPreferenceChangeListener = this
+        volumeAmountPref.apply {
+            onPreferenceChangeListener = this@DolbySettingsFragment
+            min = context.resources.getInteger(R.integer.volume_leveler_min)
+            max = context.resources.getInteger(R.integer.volume_leveler_max)
+        }
+        volumeModelerPref.onPreferenceChangeListener = this
+        audioOptimizerPref.onPreferenceChangeListener = this
         ieqPref.onPreferenceChangeListener = this
 
         resetPref.setOnPreferenceClickListener {
@@ -218,6 +237,18 @@ class DolbySettingsFragment : PreferenceFragment(),
                 dolbyController.setVolumeLevelerEnabled(newValue as Boolean)
             }
 
+            PREF_VOLUME_AMOUNT -> {
+                dolbyController.setVolumeLevelerAmount(newValue as Int)
+            }
+
+            PREF_VOLUME_MODELER -> {
+                dolbyController.setVolumeModelerEnabled(newValue as Boolean)
+            }
+
+            PREF_AUDIO_OPTIMIZER -> {
+                dolbyController.setAudioOptimizerEnabled(newValue as Boolean)
+            }
+
             PREF_IEQ -> {
                 dolbyController.setIeqPreset(newValue.toString().toInt())
             }
@@ -256,6 +287,9 @@ class DolbySettingsFragment : PreferenceFragment(),
         ieqPref.setEnabled(enable)
         dialoguePref.setEnabled(enable)
         volumePref.setEnabled(enable)
+        volumeAmountPref.setEnabled(enable)
+        volumeModelerPref.setEnabled(enable)
+        audioOptimizerPref.setEnabled(enable)
         resetPref.setEnabled(enable)
         hpVirtPref.setEnabled(enable && !isOnSpeaker)
         stereoPref?.setEnabled(enable && !isOnSpeaker)
@@ -281,6 +315,9 @@ class DolbySettingsFragment : PreferenceFragment(),
 
         spkVirtPref.setChecked(dolbyController.getSpeakerVirtEnabled(currentProfile))
         volumePref.setChecked(dolbyController.getVolumeLevelerEnabled(currentProfile))
+        volumeAmountPref.value = dolbyController.getVolumeLevelerAmount(currentProfile)
+        volumeModelerPref.setChecked(dolbyController.getVolumeModelerEnabled(currentProfile))
+        audioOptimizerPref.setChecked(dolbyController.getAudioOptimizerEnabled(currentProfile))
         bassPref.setChecked(dolbyController.getBassEnhancerEnabled(currentProfile))
 
         // below prefs are not enabled on loudspeaker

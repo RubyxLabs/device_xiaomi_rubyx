@@ -166,6 +166,21 @@ internal class DolbyController private constructor(
             prefs.getBoolean(DolbyConstants.PREF_VOLUME, getVolumeLevelerEnabled(profile)),
             profile
         )
+        setVolumeLevelerAmount(
+            prefs.getInt(
+                DolbyConstants.PREF_VOLUME_AMOUNT,
+                getVolumeLevelerAmount(profile)
+            )!!.toInt(),
+            profile
+        )
+        setVolumeModelerEnabled(
+            prefs.getBoolean(DolbyConstants.PREF_VOLUME_MODELER, getVolumeModelerEnabled(profile)),
+            profile
+        )
+        setAudioOptimizerEnabled(
+            prefs.getBoolean(DolbyConstants.PREF_AUDIO_OPTIMIZER, getAudioOptimizerEnabled(profile)),
+            profile
+        )
     }
 
     private fun checkEffect() {
@@ -269,6 +284,39 @@ internal class DolbyController private constructor(
         dlog(TAG, "setVolumeLevelerEnabled: $value")
         checkEffect()
         dolbyEffect.setDapParameter(DsParam.VOLUME_LEVELER_ENABLE, value, profile)
+    }
+
+    fun getVolumeLevelerAmount(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterInt(DsParam.VOLUME_LEVELER_AMOUNT, profile).also {
+            dlog(TAG, "getVolumeLevelerAmount: $it")
+        }
+
+    fun setVolumeLevelerAmount(value: Int, profile: Int = this.profile) {
+        dlog(TAG, "setVolumeLevelerAmount: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.VOLUME_LEVELER_AMOUNT, value, profile)
+    }
+
+    fun getVolumeModelerEnabled(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterBool(DsParam.VOLUME_MODELER_ENABLE, profile).also {
+            dlog(TAG, "getVolumeModelerEnabled: $it")
+        }
+
+    fun setVolumeModelerEnabled(value: Boolean, profile: Int = this.profile) {
+        dlog(TAG, "setVolumeModelerEnabled: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.VOLUME_MODELER_ENABLE, value, profile)
+    }
+
+    fun getAudioOptimizerEnabled(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterBool(DsParam.AUDIO_OPTIMIZER_ENABLE, profile).also {
+            dlog(TAG, "getAudioOptimizerEnabled: $it")
+        }
+
+    fun setAudioOptimizerEnabled(value: Boolean, profile: Int = this.profile) {
+        dlog(TAG, "setAudioOptimizerEnabled: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.AUDIO_OPTIMIZER_ENABLE, value, profile)
     }
 
     fun getStereoWideningAmount(profile: Int = this.profile) =

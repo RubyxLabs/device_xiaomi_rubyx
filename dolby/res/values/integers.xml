@@ -13,4 +13,8 @@
     <integer name="dialogue_enhancer_min">1</integer>
     <integer name="dialogue_enhancer_max">12</integer>
 
+    <!-- Volume leveler amount (range 0-10, default 7 for balanced leveling) -->
+    <integer name="volume_leveler_min">0</integer>
+    <integer name="volume_leveler_max">10</integer>
+
 </resources>
