@@ -87,9 +87,9 @@
 
     <string-array name="dolby_ieq_entries">
         <item>@string/dolby_off</item>
+        <item>@string/dolby_detailed</item>
         <item>@string/dolby_balanced</item>
         <item>@string/dolby_warm</item>
-        <item>@string/dolby_detailed</item>
     </string-array>
 
     <string-array name="dolby_ieq_values">
