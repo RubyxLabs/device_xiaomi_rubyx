@@ -34,8 +34,9 @@ class DolbyConstants {
         const val PREF_IEQ = "dolby_ieq"
         const val PREF_HP_VIRTUALIZER = "dolby_virtualizer"
         const val PREF_SPK_VIRTUALIZER = "dolby_spk_virtualizer"
-        const val PREF_STEREO = "dolby_stereo"
-        const val PREF_DIALOGUE = "dolby_dialogue"
+        const val PREF_STEREO_WIDENING = "dolby_stereo_widening"
+        const val PREF_DIALOGUE = "dolby_dialogue_enabled"
+        const val PREF_DIALOGUE_AMOUNT = "dolby_dialogue_amount"
         const val PREF_BASS = "dolby_bass"
         const val PREF_VOLUME = "dolby_volume"
         const val PREF_RESET = "dolby_reset"
@@ -45,15 +46,16 @@ class DolbyConstants {
             PREF_IEQ,
             PREF_HP_VIRTUALIZER,
             PREF_SPK_VIRTUALIZER,
-            PREF_STEREO,
+            PREF_STEREO_WIDENING,
             PREF_DIALOGUE,
+            PREF_DIALOGUE_AMOUNT,
             PREF_BASS,
             PREF_VOLUME
         )
 
         fun dlog(tag: String, msg: String) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(tag, msg)
+            if (Log.isLoggable(TAG, Log.DEBUG) || Log.isLoggable(tag, Log.DEBUG)) {
+                Log.d("$TAG-$tag", msg)
             }
         }
     }

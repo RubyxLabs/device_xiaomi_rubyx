@@ -138,16 +138,23 @@ internal class DolbyController private constructor(
             profile
         )
         setStereoWideningAmount(
-            prefs.getString(
-                DolbyConstants.PREF_STEREO,
-                getStereoWideningAmount(profile).toString()
+            prefs.getInt(
+                DolbyConstants.PREF_STEREO_WIDENING,
+                getStereoWideningAmount(profile)
             )!!.toInt(),
             profile
         )
-        setDialogueEnhancerAmount(
-            prefs.getString(
+        setDialogueEnhancerEnabled(
+            prefs.getBoolean(
                 DolbyConstants.PREF_DIALOGUE,
-                getDialogueEnhancerAmount(profile).toString()
+                getDialogueEnhancerEnabled(profile)
+            ),
+            profile
+        )
+        setDialogueEnhancerAmount(
+            prefs.getInt(
+                DolbyConstants.PREF_DIALOGUE_AMOUNT,
+                getDialogueEnhancerAmount(profile)
             )!!.toInt(),
             profile
         )
@@ -280,19 +287,25 @@ internal class DolbyController private constructor(
         dolbyEffect.setDapParameter(DsParam.STEREO_WIDENING_AMOUNT, value, profile)
     }
 
-    fun getDialogueEnhancerAmount(profile: Int = this.profile): Int {
-        val enabled = dolbyEffect.getDapParameterBool(DsParam.DIALOGUE_ENHANCER_ENABLE, profile)
-        val amount = if (enabled) {
-            dolbyEffect.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, profile)
-        } else 0
-        dlog(TAG, "getDialogueEnhancerAmount: enabled=$enabled amount=$amount")
-        return amount
+    fun getDialogueEnhancerEnabled(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterBool(DsParam.DIALOGUE_ENHANCER_ENABLE, profile).also {
+            dlog(TAG, "getDialogueEnhancerEnabled: $it")
+        }
+
+    fun setDialogueEnhancerEnabled(value: Boolean, profile: Int = this.profile) {
+        dlog(TAG, "setDialogueEnhancerEnabled: $value")
+        checkEffect()
+        dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, value, profile)
     }
+
+    fun getDialogueEnhancerAmount(profile: Int = this.profile) =
+        dolbyEffect.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, profile).also {
+            dlog(TAG, "getDialogueEnhancerAmount: $it")
+        }
 
     fun setDialogueEnhancerAmount(value: Int, profile: Int = this.profile) {
         dlog(TAG, "setDialogueEnhancerAmount: $value")
         checkEffect()
-        dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, (value > 0), profile)
         dolbyEffect.setDapParameter(DsParam.DIALOGUE_ENHANCER_AMOUNT, value, profile)
     }
 

@@ -5,6 +5,7 @@
 -->
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/dolby_title">
 
     <com.android.settingslib.widget.MainSwitchPreference
@@ -48,18 +49,23 @@
             android:key="dolby_virtualizer"
             android:title="@string/dolby_hp_virtualizer" />
 
-        <ListPreference
-            android:key="dolby_stereo"
-            android:entries="@array/dolby_stereo_entries"
-            android:entryValues="@array/dolby_stereo_values"
-            android:title="@string/dolby_stereo_widening"
-            android:dependency="dolby_virtualizer" />
+        <SeekBarPreference
+            android:key="dolby_stereo_widening"
+            android:title="@string/dolby_strength"
+            android:dependency="dolby_virtualizer"
+            android:min="@integer/stereo_widening_min"
+            android:max="@integer/stereo_widening_max"/>
 
-        <ListPreference
-            android:key="dolby_dialogue"
-            android:entries="@array/dolby_dialogue_entries"
-            android:entryValues="@array/dolby_dialogue_values"
+        <SwitchPreferenceCompat
+            android:key="dolby_dialogue_enabled"
             android:title="@string/dolby_dialogue_enhancer" />
+
+        <SeekBarPreference
+            android:key="dolby_dialogue_amount"
+            android:title="@string/dolby_strength"
+            android:dependency="dolby_dialogue_enabled"
+            android:min="@integer/dialogue_enhancer_min"
+            android:max="@integer/dialogue_enhancer_max"/>
 
         <SwitchPreferenceCompat
             android:key="dolby_bass"
