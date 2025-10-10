@@ -18,7 +18,7 @@ import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
-import android.x.preference.PreferenceCategory
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragment
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
@@ -139,12 +139,13 @@ class DolbySettingsFragment : PreferenceFragment(),
         profilePref.onPreferenceChangeListener = this
         profilePref.setEnabled(dsOn)
         profilePref.apply {
+            val unknownRes = context.getString(R.string.dolby_unknown)
             if (entryValues.contains(profile.toString())) {
                 summary = "%s"
                 value = profile.toString()
             } else {
                 summary = unknownRes
-                dlog(TAG, "current profile $currentProfile unknown")
+                dlog(TAG, "current profile $profile unknown")
             }
         }
 
