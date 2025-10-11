@@ -15,16 +15,30 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
     EFFECT_TYPE_NULL, EFFECT_TYPE_DAP, priority, audioSession
 ) {
 
+    init {
+        dlog(TAG, "DolbyAudioEffect created with priority=$priority, audioSession=$audioSession")
+        // Ensure the effect is enabled by default for global audio session
+        if (audioSession == 0) {
+            enabled = true
+            dlog(TAG, "Effect enabled for global audio session")
+        }
+    }
+
     var dsOn: Boolean
         get() = getIntParam(EFFECT_PARAM_ENABLE) == 1
         set(value) {
+            dlog(TAG, "setDsOn: $value")
             setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
             enabled = value
+            dlog(TAG, "AudioEffect.enabled set to: $value")
         }
 
     var profile: Int
-        get() = getIntParam(EFFECT_PARAM_PROFILE)
+        get() = getIntParam(EFFECT_PARAM_PROFILE).also {
+            dlog(TAG, "getProfile: $it")
+        }
         set(value) {
+            dlog(TAG, "setProfile: $value")
             setIntParam(EFFECT_PARAM_PROFILE, value)
         }
 

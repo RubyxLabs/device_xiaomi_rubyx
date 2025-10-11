@@ -100,7 +100,15 @@ internal class DolbyController private constructor(
 
         // Restore our main settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        dsOn = prefs.getBoolean(DolbyConstants.PREF_ENABLE, true)
+        val shouldEnable = prefs.getBoolean(DolbyConstants.PREF_ENABLE, true)
+        
+        dlog(TAG, "Dolby should be enabled: $shouldEnable")
+
+        // First, ensure the effect is enabled if needed
+        if (shouldEnable) {
+            dolbyEffect.enabled = true
+            dlog(TAG, "AudioEffect enabled")
+        }
 
         context.resources.getStringArray(R.array.dolby_profile_values)
             .map { it.toInt() }
@@ -111,8 +119,11 @@ internal class DolbyController private constructor(
                 restoreSettings(profile)
             }
 
-        // Finally restore the current profile.
+        // Finally restore the current profile and enable state
         setCurrentProfile()
+        dsOn = shouldEnable
+        
+        dlog(TAG, "Boot completed initialization finished. dsOn=$dsOn, profile=$profile")
     }
 
     private fun restoreSettings(profile: Int) {
@@ -186,8 +197,20 @@ internal class DolbyController private constructor(
     private fun checkEffect() {
         if (!dolbyEffect.hasControl()) {
             Log.w(TAG, "lost control, recreating effect")
+            val wasEnabled = dolbyEffect.enabled
+            val currentDsOn = try { dolbyEffect.dsOn } catch (e: Exception) { false }
+            val currentProfile = try { dolbyEffect.profile } catch (e: Exception) { 0 }
+            
             dolbyEffect.release()
             dolbyEffect = DolbyAudioEffect(EFFECT_PRIORITY, audioSession = 0)
+            
+            // Restore the state
+            if (wasEnabled || currentDsOn) {
+                dolbyEffect.enabled = true
+                dolbyEffect.dsOn = true
+                dolbyEffect.profile = currentProfile
+                Log.i(TAG, "Effect recreated and re-enabled with profile=$currentProfile")
+            }
         }
     }
 
