@@ -219,7 +219,7 @@ class DolbySettingsFragment : PreferenceFragment(),
             }
 
             PREF_STEREO_WIDENING -> {
-                dolbyController.setDialogueEnhancerEnabled(newValue as Boolean)
+                dolbyController.setStereoWideningAmount(newValue as Int)
             }
 
             PREF_DIALOGUE_AMOUNT -> {
@@ -227,7 +227,7 @@ class DolbySettingsFragment : PreferenceFragment(),
             }
 
             PREF_DIALOGUE -> {
-                dolbyController.setDialogueEnhancerAmount(newValue.toString().toInt())
+                dolbyController.setDialogueEnhancerEnabled(newValue as Boolean)
             }
 
             PREF_BASS -> {
