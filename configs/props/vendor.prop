@@ -98,7 +98,6 @@ debug.sf.enable_hwc_vds=0
 debug.sf.enable_transaction_tracing=false
 debug.sf.predict_hwc_composition_strategy=0
 debug.sf.treat_170m_as_sRGB=1
-ro.sf.blurs_are_expensive=1
 persist.vendor.sys.pq.disp.mi.soft.brightness=1
 ro.hardware.egl=meow
 ro.hardware.hwcomposer=mtk_common
