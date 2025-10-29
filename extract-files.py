@@ -106,6 +106,10 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/bin/hw/mtkfusionrild': blob_fixup()
         .add_needed('libutils-v32.so'),
         
+    ('system_ext/etc/init/init.vtservice.rc',
+     'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc'): blob_fixup()
+        .regex_replace('start', 'enable'),
+        
     ('vendor/lib64/libcam.hal3a.v3.so',
     'vendor/lib64/libeffecthal.base.so',
     'vendor/lib64/libmtkcam_grallocutils.so',
