@@ -27,19 +27,13 @@ namespace_imports = [
     'hardware/xiaomi',
 ]
 
-def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
-    return f'{lib}-{partition}' if partition == 'vendor' else None
-
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
-    ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
 }
 
 blob_fixups: blob_fixups_user_type = {
     'vendor/bin/mi_thermald': blob_fixup()
         .binary_regex_replace(b'%d/on', b'%d/..'),
-    'system_ext/priv-app/ImsService/ImsService.apk': blob_fixup()
-        .apktool_patch('blob-patches/ImsService.patch'),
     ('vendor/bin/hw/android.hardware.gnss-service.mediatek',
     'vendor/lib64/hw/android.hardware.gnss-impl-mediatek.so'): blob_fixup()
         .replace_needed('android.hardware.gnss-V1-ndk_platform.so', "android.hardware.gnss-V1-ndk.so"),
@@ -90,12 +84,6 @@ blob_fixups: blob_fixups_user_type = {
      'vendor/lib/soundfx/libswdap.so',
      'vendor/lib64/soundfx/libswdap.so'): blob_fixup()
         .replace_needed('libstagefright_foundation.so', 'libstagefright_foundation-v33.so'),
-    
-    'system_ext/lib64/libimsma.so': blob_fixup()
-        .replace_needed('libsink.so', 'libsink-mtk.so'),
-    
-    'system_ext/lib64/libsink-mtk.so': blob_fixup()
-        .add_needed('libaudioclient_shim.so'),
 
     ('vendor/lib/libnvram.so',
      'vendor/lib64/libnvram.so',
@@ -105,9 +93,8 @@ blob_fixups: blob_fixups_user_type = {
 
     'vendor/bin/hw/mtkfusionrild': blob_fixup()
         .add_needed('libutils-v32.so'),
-        
-    ('system_ext/etc/init/init.vtservice.rc',
-     'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc'): blob_fixup()
+
+    'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc': blob_fixup()
         .regex_replace('start', 'enable'),
         
     ('vendor/lib64/libcam.hal3a.v3.so',
@@ -115,9 +102,6 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libmtkcam_grallocutils.so',
     'vendor/lib64/libmtkcam_3rdparty.vidhance.so'): blob_fixup()
         .replace_needed('libui.so', 'libui-v34.so'),
-    
-    'system_ext/lib64/libsource.so': blob_fixup()
-        .add_needed('libui_shim.so')
 }
 
 module = ExtractUtilsModule(
