@@ -227,6 +227,10 @@ internal class DolbyController private constructor(
                 dolbyEffect.dsOn = true
                 dolbyEffect.profile = currentProfile
                 Log.i(TAG, "Effect recreated and re-enabled with profile=$currentProfile")
+                if (currentDsOn) {
+                    dlog(TAG, "Reapplying profile settings after effect recreation")
+                    restoreSettings(currentProfile)
+                }
             }
         }
     }
@@ -234,7 +238,12 @@ internal class DolbyController private constructor(
     private fun setCurrentProfile() {
         dlog(TAG, "setCurrentProfile")
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        profile = prefs.getString(DolbyConstants.PREF_PROFILE, "0" /*dynamic*/)!!.toInt()
+        val newProfile = prefs.getString(DolbyConstants.PREF_PROFILE, "0" /*dynamic*/)!!.toInt()
+        profile = newProfile
+        if (dsOn) {
+            dlog(TAG, "Reapplying stored settings for profile=$newProfile")
+            restoreSettings(newProfile)
+        }
     }
 
     fun getProfileName(): String? {
