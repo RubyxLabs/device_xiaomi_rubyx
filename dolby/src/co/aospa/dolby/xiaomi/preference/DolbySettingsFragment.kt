@@ -280,6 +280,12 @@ class DolbySettingsFragment : PreferenceFragment(),
         val dsOn = dolbyController.dsOn
         val currentProfile = dolbyController.profile
 
+        (preferenceManager.preferenceDataStore as? DolbyPreferenceStore)?.let { store ->
+            if (currentProfile >= 0 && store.profile != currentProfile) {
+                store.profile = currentProfile
+            }
+        }
+
         dlog(
             TAG, "updateProfileSpecificPrefs: dsOn=$dsOn currentProfile=$currentProfile"
                     + " isOnSpeaker=$isOnSpeaker"

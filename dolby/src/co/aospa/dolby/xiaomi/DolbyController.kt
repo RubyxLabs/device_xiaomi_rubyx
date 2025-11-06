@@ -335,12 +335,26 @@ internal class DolbyController private constructor(
         dolbyEffect.setDapParameter(DsParam.VOLUME_LEVELER_ENABLE, value, profile)
     }
 
-    fun getVolumeLevelerAmount(profile: Int = this.profile) =
-        clampVolumeLevelerAmount(
+    fun getVolumeLevelerAmount(profile: Int = this.profile): Int {
+        val effectValue = clampVolumeLevelerAmount(
             dolbyEffect.getDapParameterInt(DsParam.VOLUME_LEVELER_AMOUNT, profile)
-        ).also {
-            dlog(TAG, "getVolumeLevelerAmount (clamped): $it")
+        )
+        val storedValue = context.getSharedPreferences("profile_$profile", Context.MODE_PRIVATE)
+            .getInt(DolbyConstants.PREF_VOLUME_AMOUNT, effectValue)
+            .let(::clampVolumeLevelerAmount)
+
+        if (effectValue != storedValue) {
+            dlog(
+                TAG,
+                "getVolumeLevelerAmount: effect=$effectValue stored=$storedValue, reapplying stored value"
+            )
+            setVolumeLevelerAmount(storedValue, profile)
+            return storedValue
         }
+
+        dlog(TAG, "getVolumeLevelerAmount (clamped): $effectValue")
+        return effectValue
+    }
 
     fun setVolumeLevelerAmount(value: Int, profile: Int = this.profile) {
         val clampedValue = clampVolumeLevelerAmount(value)
