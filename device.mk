@@ -47,6 +47,9 @@ PRODUCT_PACKAGES += \
     checkpoint_gc \
     otapreopt_script
 
+# Always preopt extracted APKs to prevent extracting out of the APK for gms modules
+PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
+
 # Audio
 TARGET_EXCLUDES_AUDIOFX := true
 
@@ -77,14 +80,46 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml
 
-# ConsumerIr
-PRODUCT_PACKAGES += \
-    android.hardware.ir-service.example
+# Boot animation
+TARGET_SCREEN_HEIGHT := 2400
+TARGET_SCREEN_WIDTH := 1080
 
 # Cgroup
 PRODUCT_COPY_FILES += \
     system/core/libprocessgroup/profiles/cgroups.json:$(TARGET_COPY_OUT_VENDOR)/etc/cgroups.json \
     system/core/libprocessgroup/profiles/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
+
+# ConsumerIr
+PRODUCT_PACKAGES += \
+    android.hardware.ir-service.example
+
+# DeviceAsWebcam
+TARGET_BUILD_DEVICE_AS_WEBCAM := true
+
+# Dex
+WITH_DEXPREOPT := true
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := false
+PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := everything
+PRODUCT_DEX_PREOPT_GENERATE_DM_FILES := true
+DONT_DEXPREOPT_PREBUILTS := false
+
+# Dex - Apps
+PRODUCT_DEXPREOPT_SPEED_APPS += \
+    SystemUI \
+    TrebuchetQuickStep \
+    Settings \
+    PrebuiltGmsCore \
+    GoogleServicesFramework \
+    Phonesky
+
+# Dex - Debug
+ART_BUILD_TARGET_NDEBUG := true
+ART_BUILD_TARGET_DEBUG := false
+ART_BUILD_HOST_NDEBUG := true
+ART_BUILD_HOST_DEBUG := false
+PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
+PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
+USE_DEX2OAT_DEBUG := false
 
 # Display
 PRODUCT_PACKAGES += \
@@ -126,6 +161,27 @@ PRODUCT_PACKAGES += \
 
 # IMS
 $(call inherit-product, vendor/mediatek/ims/ims.mk)
+
+# Init
+PRODUCT_PACKAGES += \
+    fstab.mt6877 \
+    fstab.mt6877.ramdisk \
+    init.batterysecret.rc \
+    init.connectivity.rc \
+    init.fingerprint.rc \
+    init.mi_thermald.rc \
+    init.modem.rc \
+    init.mt6877.rc \
+    init.mt6877.power.rc \
+    init.mt6877.usb.rc \
+    init.project.rc \
+    init.sensor_2_0.rc \
+    init.stnfc.rc \
+    init.target.rc \
+    ueventd.mt6877.rc
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/init/init.recovery.mt6877.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6877.rc
 
 # Light
 PRODUCT_PACKAGES += \
@@ -248,7 +304,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
-# Power
 $(call soong_config_set,power_libperfmgr,mode_extension_lib,//$(LOCAL_PATH):libperfmgr-ext-xiaomi)
 
 # Power Off Alarm
@@ -261,26 +316,9 @@ include $(DEVICE_PATH)/vendor_logtag.mk
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(DEVICE_PATH)/configs/rsc,$(TARGET_COPY_OUT_VENDOR)/etc/rsc)
 
-# Init
-PRODUCT_PACKAGES += \
-    fstab.mt6877 \
-    fstab.mt6877.ramdisk \
-    init.batterysecret.rc \
-    init.connectivity.rc \
-    init.fingerprint.rc \
-    init.mi_thermald.rc \
-    init.modem.rc \
-    init.mt6877.rc \
-    init.mt6877.power.rc \
-    init.mt6877.usb.rc \
-    init.project.rc \
-    init.sensor_2_0.rc \
-    init.stnfc.rc \
-    init.target.rc \
-    ueventd.mt6877.rc
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/init/init.recovery.mt6877.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6877.rc
+# Reduce system server verbosity.
+PRODUCT_SYSTEM_SERVER_DEBUG_INFO := false
+PRODUCT_OTHER_JAVA_DEBUG_INFO := false
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -292,6 +330,11 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
+
+# Ship libbase_shim as product package
+PRODUCT_PACKAGES += \
+    libbase_shim \
+    libaudioclient_shim
 
 # Shipping API level
 PRODUCT_SHIPPING_API_LEVEL := 31
@@ -310,49 +353,8 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/mediatek/libmtkperf_client \
     hardware/xiaomi
 
-# Dex
-WITH_DEXPREOPT := true
-WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := false
-PRODUCT_DEX_PREOPT_DEFAULT_COMPILER_FILTER := everything
-PRODUCT_DEX_PREOPT_GENERATE_DM_FILES := true
-DONT_DEXPREOPT_PREBUILTS := false
-
-# Dex - Debug
-ART_BUILD_TARGET_NDEBUG := true
-ART_BUILD_TARGET_DEBUG := false
-ART_BUILD_HOST_NDEBUG := true
-ART_BUILD_HOST_DEBUG := false
-PRODUCT_MINIMIZE_JAVA_DEBUG_INFO := true
-PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
-USE_DEX2OAT_DEBUG := false
-
-# Dex - Apps
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    SystemUI \
-    TrebuchetQuickStep \
-    Settings \
-    PrebuiltGmsCore \
-    GoogleServicesFramework \
-    Phonesky
-
 # Speed profile services and wifi-service to reduce RAM and storage
 PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed-profile
-
-#Ship libbase_shim as product package
-PRODUCT_PACKAGES += \
-    libbase_shim \
-    libaudioclient_shim
-
-# Reduce system server verbosity.
-PRODUCT_SYSTEM_SERVER_DEBUG_INFO := false
-PRODUCT_OTHER_JAVA_DEBUG_INFO := false
-
-# Always preopt extracted APKs to prevent extracting out of the APK for gms modules
-PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
-
-# Use a profile based boot image for this device
-PRODUCT_USE_PROFILE_FOR_BOOT_IMAGE := true
-PRODUCT_DEX_PREOPT_BOOT_IMAGE_PROFILE_LOCATION := frameworks/base/boot/boot-image-profile.txt
 
 # Thermal
 PRODUCT_PACKAGES += \
@@ -365,6 +367,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.usb-service.mediatek \
     android.hardware.usb.gadget-service.mediatek
+
+# Use a profile based boot image for this device
+PRODUCT_USE_PROFILE_FOR_BOOT_IMAGE := true
+PRODUCT_DEX_PREOPT_BOOT_IMAGE_PROFILE_LOCATION := frameworks/base/boot/boot-image-profile.txt
 
 # Vibrator
 $(call soong_config_set, vibrator, vibratortargets, vibratoraidlV2target)
