@@ -79,7 +79,7 @@
             android:key="dolby_volume_amount"
             android:title="@string/dolby_strength"
             android:dependency="dolby_volume"
-            android:defaultValue="7"
+            android:defaultValue="5"
             android:min="@integer/volume_leveler_min"
             android:max="@integer/volume_leveler_max"/>
 
