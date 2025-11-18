@@ -181,7 +181,7 @@ PRODUCT_PACKAGES += \
     ueventd.mt6877.rc
 
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/init/init.recovery.mt6877.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6877.rc
+    $(DEVICE_PATH)/rootdir/etc/init.recovery.mt6877.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6877.rc
 
 # Light
 PRODUCT_PACKAGES += \
