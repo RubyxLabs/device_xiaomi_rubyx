@@ -206,14 +206,6 @@ ro.vendor.mediatek.platform=MT6877
 ro.vendor.mediatek.version.branch=alps-mp-s0.mp1.tc8sp-cs1
 ro.vendor.mediatek.version.release=alps-mp-s0.mp1.tc8sp-cs1-V1.0.13_xiaomi.s0mp1.k6877v1.64.k419_P15
 
-# Memory
-ro.config.dha_cached_max=16
-ro.config.dha_empty_init=32
-ro.config.dha_empty_max=42
-ro.config.dha_lmk_scale=0.545
-ro.config.fha_enable=true
-ro.sys.fw.bg_apps_limit=32
-
 # Neural Networks
 debug.mtk_tflite.target_nnapi=29
 ro.vendor.mtk_nn.option=A,B,E,F,Z
