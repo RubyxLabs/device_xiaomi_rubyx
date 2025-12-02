@@ -60,7 +60,7 @@
     <dimen name="physical_power_button_center_screen_location_y">1060px</dimen>
 
     <!-- Preferred max refresh rate at keyguard, if supported by the display. -->
-    <integer name="config_keyguardMaxRefreshRate">60</integer>
+    <integer name="config_keyguardMaxRefreshRate">120</integer>
 
     <!-- Adjust the icon padding in status bar for rounded corners. -->
     <dimen name="rounded_corner_content_padding">47.0px</dimen>
