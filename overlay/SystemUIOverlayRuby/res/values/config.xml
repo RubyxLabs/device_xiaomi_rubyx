@@ -65,9 +65,6 @@
     <!-- Adjust the icon padding in status bar for rounded corners. -->
     <dimen name="rounded_corner_content_padding">47.0px</dimen>
 
-    <!-- the padding on the start of the statusbar -->
-    <dimen name="status_bar_padding_start">15dp</dimen>
-
     <!-- the padding on the top of the statusbar (usually 0) -->
     <dimen name="status_bar_padding_top">14.0px</dimen>
 
