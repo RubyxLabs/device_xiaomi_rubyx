@@ -49,6 +49,9 @@ blob_fixups: blob_fixups_user_type = {
      'vendor/firmware/txpowerctrl_in_u.cfg'): blob_fixup()
         .regex_replace(r'\t', ''),
     
+    'vendor/etc/vintf/manifest/manifest_media_c2_V1_2_default.xml': blob_fixup()
+        .regex_replace('1.1', '1.2'),
+    
     ('vendor/bin/mnld',
      'vendor/lib/libaalservice.so',
      'vendor/lib64/libaalservice.so'): blob_fixup()
