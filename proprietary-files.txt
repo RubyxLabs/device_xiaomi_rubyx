@@ -1435,6 +1435,9 @@ vendor/lib64/libfiltersimulation.so
 vendor/lib64/libformatter.so
 vendor/lib64/libpowerhalwrap_vendor.so
 
+# Misc
+vendor/lib64/librpc.so
+
 # Mlipay
 vendor/bin/mlipayd_isee@1.1
 vendor/etc/init/vendor.xiaomi.hardware.mlipay@1.1-iseeservice.rc
