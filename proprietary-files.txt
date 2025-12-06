@@ -1558,6 +1558,7 @@ vendor/lib64/libmtkconfig.so
 vendor/lib64/libmtkconfigutils.so
 vendor/lib64/libmtkcutils.so
 vendor/lib64/libmtkhardware_legacy.so
+vendor/lib64/libmtkmipc-ril.so
 vendor/lib64/libmtknetcap.so
 vendor/lib64/libmtknetutils.so
 vendor/lib64/libmtkproperty.so
