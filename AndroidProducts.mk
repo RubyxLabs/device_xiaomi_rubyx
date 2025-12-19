@@ -4,4 +4,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_rubyx.mk
+    $(LOCAL_DIR)/infinity_rubyx.mk
