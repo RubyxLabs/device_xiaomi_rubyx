@@ -135,7 +135,6 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/configs/props/vendor.prop
 TARGET_ODM_PROP += $(DEVICE_PATH)/configs/props/odm.prop
 
 # Init (variant properties)
-TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_rubyx
 TARGET_RECOVERY_DEVICE_MODULES += libinit_rubyx
 
 # Recovery

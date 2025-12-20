@@ -6,7 +6,6 @@
 cc_library_static {
     name: "libinit_rubyx",
     srcs: ["init_rubyx.cpp"],
-    vendor: true,
     recovery_available: true,
     shared_libs: [
         "libbase",

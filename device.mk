@@ -184,6 +184,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/rootdir/etc/init.recovery.mt6877.rc:$(TARGET_COPY_OUT_RECOVERY)/root/init.recovery.mt6877.rc
 
+$(call soong_config_set,libinit,vendor_init_lib,libinit_rubyx)
+
 # Light
 PRODUCT_PACKAGES += \
     android.hardware.light-service.lineage
