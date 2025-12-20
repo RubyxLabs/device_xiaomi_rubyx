@@ -10,12 +10,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from device makefile.
 $(call inherit-product, device/xiaomi/rubyx/device.mk)
 
-# Inherit some common Project Infinity OS stuff.
+# Inherit some common Project Infinity X stuff.
 $(call inherit-product, vendor/infinity/config/common_full_phone.mk)
 
 INFINITY_MAINTAINER := "Aeron"
-TARGET_HAS_UDFPS := false
-WITH_GAPPS := true
 
 PRODUCT_NAME := infinity_rubyx
 PRODUCT_DEVICE := rubyx

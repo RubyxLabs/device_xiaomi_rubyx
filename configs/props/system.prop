@@ -11,12 +11,9 @@ dalvik.vm.dex2oat64.enabled=true
 ro.bpf.kver_override=5.4.186
 
 # Inherit some Project Infinity X props
-ro.product.marketname=Redmi Note 12 Pro/ Pro+ 5G/ Discovery Edition
 ro.infinity.soc=MediaTek Dimensity 1080 (MT6877V) (6nm)
 ro.infinity.battery=5000 mAh
 ro.infinity.display=1080 x 2400, 120Hz
-ro.infinity.camera=50MP/200MP + 8MP + 2MP // 16 MP
-
 
 # IMS
 persist.dbg.volte_avail_ovr=1

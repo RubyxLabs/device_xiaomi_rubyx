@@ -134,6 +134,10 @@ TARGET_SYSTEM_PROP += $(DEVICE_PATH)/configs/props/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/configs/props/vendor.prop
 TARGET_ODM_PROP += $(DEVICE_PATH)/configs/props/odm.prop
 
+# Init (variant properties)
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_rubyx
+TARGET_RECOVERY_DEVICE_MODULES += libinit_rubyx
+
 # Recovery
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.mt6877
 TARGET_USERIMAGES_USE_EXT4 := true

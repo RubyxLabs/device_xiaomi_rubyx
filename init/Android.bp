@@ -1,0 +1,18 @@
+//
+// SPDX-FileCopyrightText: 2023-2025 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_static {
+    name: "libinit_rubyx",
+    srcs: ["init_rubyx.cpp"],
+    vendor: true,
+    recovery_available: true,
+    shared_libs: [
+        "libbase",
+    ],
+    include_dirs: [
+        "system/libbase/include",
+        "system/core/init",
+    ],
+}
