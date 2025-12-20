@@ -14,7 +14,7 @@ $(call inherit-product, device/xiaomi/rubyx/device.mk)
 $(call inherit-product, vendor/infinity/config/common_full_phone.mk)
 
 INFINITY_MAINTAINER := "Aeron"
-
+PERF_ANIM_OVERRIDE := true
 PRODUCT_NAME := infinity_rubyx
 PRODUCT_DEVICE := rubyx
 PRODUCT_MANUFACTURER := Xiaomi
