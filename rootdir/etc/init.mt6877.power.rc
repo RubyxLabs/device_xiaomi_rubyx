@@ -96,7 +96,7 @@ on enable-low-power
 
     # Uclamp tuning
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
-    write /proc/sys/kernel/sched_util_clamp_min 128
+    write /proc/sys/kernel/sched_util_clamp_min 0
 
     # Enable PowerHAL hint processing
     setprop vendor.powerhal.init 1
