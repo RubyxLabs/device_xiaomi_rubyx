@@ -1,0 +1,15 @@
+cc_library_static {
+    name: "libcameraservice_extension.rubyx",
+    srcs: ["CameraProviderExtension.cpp"],
+    include_dirs: [
+        "frameworks/av/services/camera/libcameraservice",
+    ],
+    shared_libs: [
+        "liblog",
+    ],
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+}
