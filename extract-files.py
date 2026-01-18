@@ -96,6 +96,11 @@ blob_fixups: blob_fixups_user_type = {
 
     'vendor/bin/hw/mtkfusionrild': blob_fixup()
         .add_needed('libutils-v32.so'),
+        
+    ('vendor/lib/librt_extamp_intf.so',
+     'vendor/lib/hw/audio.primary.mt6877.so',
+     'vendor/lib64/hw/vendor.mediatek.hardware.pq@2.14-impl.so'): blob_fixup()
+	    .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
 
     'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc': blob_fixup()
         .regex_replace('start', 'enable'),
