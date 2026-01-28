@@ -105,6 +105,11 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/init/android.hardware.neuralnetworks@1.3-service-mtk-neuron.rc': blob_fixup()
         .regex_replace('start', 'enable'),
         
+    ('vendor/lib/libvcodec_oal.so'): blob_fixup()
+        .clear_symbol_version('__aeabi_memcpy')
+        .clear_symbol_version('__aeabi_memset')
+        .clear_symbol_version('__gnu_Unwind_Find_exidx'),
+        
     ('vendor/lib64/libcam.hal3a.v3.so',
     'vendor/lib64/libeffecthal.base.so',
     'vendor/lib64/libmtkcam_grallocutils.so',
