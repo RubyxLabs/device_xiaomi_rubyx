@@ -66,7 +66,6 @@ on fs
     restorecon_recursive /mnt/rescue
 
 on late-fs
-    wait_for_prop hwservicemanager.ready "true"
     mount_all --late
 
 on post-fs
