@@ -1,0 +1,12 @@
+diff --git a/libutils/binder/Android.bp b/libutils/binder/Android.bp
+index f6a777e..13e7bd1 100644
+--- a/libutils/binder/Android.bp
++++ b/libutils/binder/Android.bp
+@@ -53,6 +53,7 @@ cc_defaults {
+         "-Winvalid-offsetof",
+         "-Wsequence-point",
+         "-Wzero-as-null-pointer-constant",
++        "-DANDROID_UTILS_CALLSTACK_ENABLED=0",
+     ],
+
+     afdo: true,

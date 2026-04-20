@@ -2,8 +2,11 @@
 set -e
 
 BUILD_TOP="${ANDROID_BUILD_TOP:-$(pwd)}"
+DEVICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLANG_DIR="$BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r563880"
 CLANG_REPO="https://github.com/Aeron-Aeron/linux-x86-clang-21.0.0-r563880"
+CORE_DIR="$BUILD_TOP/system/core"
+LIBUTILS_PATCH="$DEVICE_DIR/patches/libutils.patch"
 
 if [ ! -d "$CLANG_DIR/bin" ]; then
     echo "[vendorsetup] Clang r563880 not found, cloning..."
@@ -11,4 +14,17 @@ if [ ! -d "$CLANG_DIR/bin" ]; then
     git clone --depth=1 "$CLANG_REPO" "$CLANG_DIR"
 else
     echo "[vendorsetup] Clang r563880 found. Skipping cloning."
+fi
+
+if [ -d "$CORE_DIR" ] && [ -f "$LIBUTILS_PATCH" ]; then
+    if git -C "$CORE_DIR" apply --reverse --check "$LIBUTILS_PATCH" >/dev/null 2>&1; then
+        echo "[vendorsetup] libutils patch already applied. Skipping."
+    elif git -C "$CORE_DIR" apply --check "$LIBUTILS_PATCH" >/dev/null 2>&1; then
+        echo "[vendorsetup] Applying libutils patch in system/core..."
+        git -C "$CORE_DIR" apply "$LIBUTILS_PATCH"
+    else
+        echo "[vendorsetup] libutils patch could not be applied cleanly."
+    fi
+else
+    echo "[vendorsetup] Missing system/core or patches/libutils.patch. Skipping libutils patch."
 fi
