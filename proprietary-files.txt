@@ -309,8 +309,8 @@ vendor/lib64/libbt-vendor.so
 vendor/lib/vendor.mediatek.hardware.bluetooth.audio@2.1.so
 vendor/lib/vendor.mediatek.hardware.bluetooth.audio@2.2.so
 
-# Bluetooth (Firmware)
-vendor/firmware/soc5_0_ram_bt_1_1_hdr.bin
+# Bluetooth (Firmware) - from a34xdxx-user 16 BP2A.250605.031.A3 A346EXXSEEZC7 release-keys
+vendor/firmware/soc5_0_ram_bt_1_1_hdr.bin|2b45818905fc2f8dde2c1003e9193c013fe937b0
 
 # Camera
 vendor/bin/hw/camerahalserver
@@ -1207,9 +1207,9 @@ vendor/firmware/txpowerctrl_gl_u.cfg
 vendor/firmware/txpowerctrl_in.cfg
 vendor/firmware/txpowerctrl_in_u.cfg
 
-# Connectivity (Firmware)
-vendor/firmware/soc5_0_ram_mcu_1_1_hdr.bin
-vendor/firmware/soc5_0_ram_wmmcu_1_1_hdr.bin
+# Connectivity (Firmware) - from a34xdxx-user 16 BP2A.250605.031.A3 A346EXXSEEZC7 release-keys
+vendor/firmware/soc5_0_ram_mcu_1_1_hdr.bin|e381e81eba61cd6ce297732e9717e1a69e806b5e
+vendor/firmware/soc5_0_ram_wmmcu_1_1_hdr.bin|303fe56af8e77ec15c905c8933c4321487659c4c
 
 # ConsumerIr
 vendor/lib64/hw/consumerir.common.so
@@ -2051,5 +2051,5 @@ vendor/lib64/libwifi-hal.so:vendor/lib64/libwifi-hal-mtk.so;FIX_SONAME
 # Wi-Fi (Config) - from ruby-user 14 UP1A.231005.007 V816.0.6.0.UMOCNXM release-keys
 vendor/firmware/wifi.cfg|5d3344dc18716ae413c3253b8e297f2879d751f8
 
-# Wi-Fi (Firmware)
-vendor/firmware/WIFI_RAM_CODE_soc5_0_1_1.bin
+# Wi-Fi (Firmware) - from a34xdxx-user 16 BP2A.250605.031.A3 A346EXXSEEZC7 release-keys
+vendor/firmware/WIFI_RAM_CODE_soc5_0_1_1.bin|89f286ca6ac188b1847ecea92394551c4ad45e66
