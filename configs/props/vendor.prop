@@ -205,9 +205,6 @@ ro.vendor.mtk_nn_baseline_support=1
 ro.vendor.mtk_nn_quant_preferred=1
 ro.vendor.mtk_nn_support=1
 
-# Perf
-ro.vendor.perf.framepacing.enable=1
-
 # Power
 vendor.powerhal.interaction.max=200
 vendor.powerhal.interaction.min=30
