@@ -34,4 +34,7 @@
         <item>ap\\d</item>
         <item>ap_br_ap\\d</item>
     </string-array>
+
+    <!-- String indicating the package name of the device GbaService implementation. -->
+    <string name="config_gba_package" translatable="false">com.mediatek.gbaservice</string>
 </resources>

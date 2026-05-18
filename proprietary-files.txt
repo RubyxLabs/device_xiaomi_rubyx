@@ -1376,6 +1376,7 @@ vendor/lib64/libmnl.so
 # IMS
 system_ext/lib64/vendor.mediatek.hardware.videotelephony-V1-ndk.so
 system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so
+system_ext/priv-app/MtkGbaService/MtkGbaService.apk:system/priv-app/MtkGbaService/MtkGbaService.apk
 
 # Keymaster
 vendor/bin/bp_kmsetkey_ca
