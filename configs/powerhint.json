@@ -4,7 +4,6 @@
       "Name": "CPULittleClusterMaxFreq",
       "Path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq",
       "Values": [
-        "-1",
         "2000000",
         "1903000",
         "1800000",
@@ -44,16 +43,15 @@
         "900000",
         "740000",
         "650000",
-        "500000",
-        "-1"
+        "500000"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 15
     },
     {
       "Name": "CPUBigClusterMaxFreq",
       "Path": "/sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq",
       "Values": [
-        "-1",
         "2600000",
         "2400000",
         "2275000",
@@ -93,10 +91,10 @@
         "1040000",
         "910000",
         "740000",
-        "650000",
-        "-1"
+        "650000"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 15
     },
     {
       "Name": "GPUSchedMode",
@@ -115,7 +113,7 @@
         "100",
         "75",
         "50",
-        "0"
+        "16"
       ],
       "ResetOnInit": true,
       "DefaultIndex": 0
@@ -127,7 +125,7 @@
         "100",
         "75",
         "50",
-        "0"
+        "16"
       ],
       "ResetOnInit": true,
       "DefaultIndex": 0
@@ -141,11 +139,10 @@
         "60",
         "50",
         "30",
-        "0",
-        "-1"
+        "0"
       ],
       "ResetOnInit": true,
-      "DefaultIndex": 3
+      "DefaultIndex": 5
     },
     {
       "Name": "FGUclampMin",
@@ -158,7 +155,8 @@
         "15",
         "0"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 5
     },
     {
       "Name": "TAUclampMin",
@@ -175,7 +173,8 @@
         "10",
         "0"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 9
     },
     {
       "Name": "CDUclampMin",
@@ -184,16 +183,18 @@
         "100",
         "0"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 1
     },
     {
       "Name": "DRAMOppMin",
       "Path": "/proc/perfmgr/boost_ctrl/dram_ctrl/ddr",
       "Values": [
         "1",
-        "-1"
+        "0"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 1
     },
     {
       "Name": "SchedBoost",
@@ -202,7 +203,8 @@
         "1",
         "0"
       ],
-      "ResetOnInit": true
+      "ResetOnInit": true,
+      "DefaultIndex": 1
     },
     {
       "Name": "PowerHALAudioState",
@@ -246,31 +248,31 @@
       "PowerHint": "INTERACTION",
       "Node": "CPULittleClusterMaxFreq",
       "Duration": 800,
-      "Value": "-1"
+      "Value": "2000000"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "CPULittleClusterMinFreq",
       "Duration": 800,
-      "Value": "1703000"
+      "Value": "1260000"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 800,
-      "Value": "-1"
+      "Value": "2600000"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "CPUBigClusterMinFreq",
       "Duration": 800,
-      "Value": "2000000"
+      "Value": "1540000"
     },
     {
       "PowerHint": "INTERACTION",
       "Node": "TAUclampMin",
       "Duration": 800,
-      "Value": "60"
+      "Value": "100"
     },
     {
       "PowerHint": "INTERACTION",
@@ -282,7 +284,7 @@
       "PowerHint": "INTERACTION",
       "Node": "DRAMOppMin",
       "Duration": 800,
-      "Value": "1"
+      "Value": "0"
     },
     {
       "PowerHint": "INTERACTION",
@@ -306,25 +308,25 @@
       "PowerHint": "LAUNCH",
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 2000,
-      "Value": "-1"
+      "Value": "2600000"
     },
     {
       "PowerHint": "LAUNCH",
       "Node": "CPUBigClusterMinFreq",
       "Duration": 2000,
-      "Value": "2275000"
+      "Value": "2600000"
     },
     {
       "PowerHint": "LAUNCH",
       "Node": "CPULittleClusterMaxFreq",
       "Duration": 2000,
-      "Value": "-1"
+      "Value": "2000000"
     },
     {
       "PowerHint": "LAUNCH",
       "Node": "CPULittleClusterMinFreq",
       "Duration": 2000,
-      "Value": "1703000"
+      "Value": "2000000"
     },
     {
       "PowerHint": "LAUNCH",
@@ -336,7 +338,7 @@
       "PowerHint": "LAUNCH",
       "Node": "TAUclampMin",
       "Duration": 2000,
-      "Value": "80"
+      "Value": "100"
     },
     {
       "PowerHint": "LAUNCH",
@@ -378,13 +380,13 @@
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUSchedPeriod",
       "Duration": 0,
-      "Value": "0"
+      "Value": "16"
     },
     {
       "PowerHint": "EXPENSIVE_RENDERING",
       "Node": "GPUDVFSInterval",
       "Duration": 0,
-      "Value": "0"
+      "Value": "16"
     },
     {
       "PowerHint": "EXPENSIVE_RENDERING",
