@@ -37,8 +37,8 @@ on charger
     chown system system /mnt/vendor/nvcfg
     chmod 0771 /mnt/vendor/nvcfg
     restorecon_recursive /mnt/vendor/nvcfg
-    write /sys/devices/platform/battery_meter/FG_daemon_log_level 7
-    write /sys/bus/platform/devices/battery/FG_daemon_log_level 7
+    write /sys/devices/platform/battery_meter/FG_daemon_log_level 1
+    write /sys/bus/platform/devices/battery/FG_daemon_log_level 1
     # Permissions for System Server and daemons.
     chown system system /sys/power/autosleep
     chown system system /sys/power/state
