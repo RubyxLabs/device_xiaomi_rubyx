@@ -52,17 +52,21 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/vintf/manifest/manifest_media_c2_V1_2_default.xml': blob_fixup()
         .regex_replace('1.1', '1.2'),
     
-    ('vendor/bin/mnld',
-     'vendor/lib/libaalservice.so',
+    ('vendor/lib/libaalservice.so',
      'vendor/lib64/libaalservice.so'): blob_fixup()
         .replace_needed('libsensorndkbridge.so', 'android.hardware.sensors@1.0-convert-shared.so'),
+
+    'vendor/bin/mnld': blob_fixup()
+        .replace_needed('libsensorndkbridge.so', 'android.hardware.sensors@1.0-convert-shared.so')
+        .replace_needed('libmnl.so', 'libmnl_mtk.so'),
 
     ('vendor/lib/hw/audio.primary.mt6877.so',
      'vendor/lib64/hw/audio.primary.mt6877.so'): blob_fixup()
         .add_needed('libstagefright_foundation-v33.so')
         .replace_needed('libalsautils.so', 'libalsautils-v31.so'),
     
-    'vendor/lib64/libmnl.so': blob_fixup()
+    'vendor/lib64/libmnl_mtk.so': blob_fixup()
+        .fix_soname()
         .add_needed('libcutils.so'),
     
     ('vendor/lib/libteei_daemon_vfs.so',
