@@ -19,10 +19,7 @@ class DolbyConstants {
         DIALOGUE_ENHANCER_AMOUNT(108),
         GEQ_BAND_GAINS(110, 20),
         BASS_ENHANCER_ENABLE(111),
-        STEREO_WIDENING_AMOUNT(113),
-        VOLUME_LEVELER_AMOUNT(114),
-        VOLUME_MODELER_ENABLE(115),
-        AUDIO_OPTIMIZER_ENABLE(116);
+        STEREO_WIDENING_AMOUNT(113);
 
         override fun toString(): String {
             return "${name}(${id})"
@@ -42,9 +39,6 @@ class DolbyConstants {
         const val PREF_DIALOGUE_AMOUNT = "dolby_dialogue_amount"
         const val PREF_BASS = "dolby_bass"
         const val PREF_VOLUME = "dolby_volume"
-        const val PREF_VOLUME_AMOUNT = "dolby_volume_amount"
-        const val PREF_VOLUME_MODELER = "dolby_volume_modeler"
-        const val PREF_AUDIO_OPTIMIZER = "dolby_audio_optimizer"
         const val PREF_RESET = "dolby_reset"
 
         val PROFILE_SPECIFIC_PREFS = setOf(
@@ -56,10 +50,7 @@ class DolbyConstants {
             PREF_DIALOGUE,
             PREF_DIALOGUE_AMOUNT,
             PREF_BASS,
-            PREF_VOLUME,
-            PREF_VOLUME_AMOUNT,
-            PREF_VOLUME_MODELER,
-            PREF_AUDIO_OPTIMIZER
+            PREF_VOLUME
         )
 
         fun dlog(tag: String, msg: String) {

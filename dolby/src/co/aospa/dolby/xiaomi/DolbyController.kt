@@ -26,10 +26,6 @@ internal class DolbyController private constructor(
     private val audioManager = context.getSystemService(AudioManager::class.java)
     private val handler = Handler(context.mainLooper)
     private val stereoWideningSupported = context.getResources().getBoolean(R.bool.dolby_stereo_widening_supported)
-    private val volumeLevelerMin = context.resources.getInteger(R.integer.volume_leveler_min)
-    private val volumeLevelerMax = context.resources.getInteger(R.integer.volume_leveler_max)
-        .coerceAtLeast(volumeLevelerMin)
-    private val paramSupportCache = mutableMapOf<DsParam, Boolean>()
 
     // Restore current profile on every media session
     private val playbackCallback = object : AudioPlaybackCallback() {
@@ -181,33 +177,6 @@ internal class DolbyController private constructor(
             prefs.getBoolean(DolbyConstants.PREF_VOLUME, getVolumeLevelerEnabled(profile)),
             profile
         )
-        val storedVolumeAmount = prefs.getInt(
-            DolbyConstants.PREF_VOLUME_AMOUNT,
-            getVolumeLevelerAmount(profile)
-        )!!.toInt()
-        setVolumeLevelerAmount(clampVolumeLevelerAmount(storedVolumeAmount), profile)
-        if (isVolumeModelerSupported()) {
-            setVolumeModelerEnabled(
-                prefs.getBoolean(
-                    DolbyConstants.PREF_VOLUME_MODELER,
-                    getVolumeModelerEnabled(profile)
-                ),
-                profile
-            )
-        } else {
-            dlog(TAG, "Volume modeler unsupported, skipping restore")
-        }
-        if (isAudioOptimizerSupported()) {
-            setAudioOptimizerEnabled(
-                prefs.getBoolean(
-                    DolbyConstants.PREF_AUDIO_OPTIMIZER,
-                    getAudioOptimizerEnabled(profile)
-                ),
-                profile
-            )
-        } else {
-            dlog(TAG, "Audio optimizer unsupported, skipping restore")
-        }
     }
 
     private fun checkEffect() {
@@ -219,7 +188,6 @@ internal class DolbyController private constructor(
             
             dolbyEffect.release()
             dolbyEffect = DolbyAudioEffect(EFFECT_PRIORITY, audioSession = 0)
-            paramSupportCache.clear()
             
             // Restore the state
             if (wasEnabled || currentDsOn) {
@@ -335,78 +303,6 @@ internal class DolbyController private constructor(
         dolbyEffect.setDapParameter(DsParam.VOLUME_LEVELER_ENABLE, value, profile)
     }
 
-    fun getVolumeLevelerAmount(profile: Int = this.profile): Int {
-        val effectValue = clampVolumeLevelerAmount(
-            dolbyEffect.getDapParameterInt(DsParam.VOLUME_LEVELER_AMOUNT, profile)
-        )
-        val storedValue = context.getSharedPreferences("profile_$profile", Context.MODE_PRIVATE)
-            .getInt(DolbyConstants.PREF_VOLUME_AMOUNT, effectValue)
-            .let(::clampVolumeLevelerAmount)
-
-        if (effectValue != storedValue) {
-            dlog(
-                TAG,
-                "getVolumeLevelerAmount: effect=$effectValue stored=$storedValue, reapplying stored value"
-            )
-            setVolumeLevelerAmount(storedValue, profile)
-            return storedValue
-        }
-
-        dlog(TAG, "getVolumeLevelerAmount (clamped): $effectValue")
-        return effectValue
-    }
-
-    fun setVolumeLevelerAmount(value: Int, profile: Int = this.profile) {
-        val clampedValue = clampVolumeLevelerAmount(value)
-        if (clampedValue != value) {
-            dlog(TAG, "setVolumeLevelerAmount: requested=$value clamped=$clampedValue")
-        } else {
-            dlog(TAG, "setVolumeLevelerAmount: $value")
-        }
-        checkEffect()
-        dolbyEffect.setDapParameter(DsParam.VOLUME_LEVELER_AMOUNT, clampedValue, profile)
-    }
-
-    fun getVolumeModelerEnabled(profile: Int = this.profile): Boolean {
-        if (!isVolumeModelerSupported()) {
-            dlog(TAG, "getVolumeModelerEnabled: unsupported")
-            return false
-        }
-        return dolbyEffect.getDapParameterBool(DsParam.VOLUME_MODELER_ENABLE, profile).also {
-            dlog(TAG, "getVolumeModelerEnabled: $it")
-        }
-    }
-
-    fun setVolumeModelerEnabled(value: Boolean, profile: Int = this.profile) {
-        if (!isVolumeModelerSupported()) {
-            dlog(TAG, "setVolumeModelerEnabled: skipping, unsupported")
-            return
-        }
-        dlog(TAG, "setVolumeModelerEnabled: $value")
-        checkEffect()
-        dolbyEffect.setDapParameter(DsParam.VOLUME_MODELER_ENABLE, value, profile)
-    }
-
-    fun getAudioOptimizerEnabled(profile: Int = this.profile): Boolean {
-        if (!isAudioOptimizerSupported()) {
-            dlog(TAG, "getAudioOptimizerEnabled: unsupported")
-            return false
-        }
-        return dolbyEffect.getDapParameterBool(DsParam.AUDIO_OPTIMIZER_ENABLE, profile).also {
-            dlog(TAG, "getAudioOptimizerEnabled: $it")
-        }
-    }
-
-    fun setAudioOptimizerEnabled(value: Boolean, profile: Int = this.profile) {
-        if (!isAudioOptimizerSupported()) {
-            dlog(TAG, "setAudioOptimizerEnabled: skipping, unsupported")
-            return
-        }
-        dlog(TAG, "setAudioOptimizerEnabled: $value")
-        checkEffect()
-        dolbyEffect.setDapParameter(DsParam.AUDIO_OPTIMIZER_ENABLE, value, profile)
-    }
-
     fun getStereoWideningAmount(profile: Int = this.profile) =
         if (!stereoWideningSupported) {
             0
@@ -459,7 +355,6 @@ internal class DolbyController private constructor(
     companion object {
         private const val TAG = "DolbyController"
         private const val EFFECT_PRIORITY = 100
-        private const val SUPPORT_PROBE_PROFILE = 0
 
         @Volatile
         private var instance: DolbyController? = null
@@ -469,33 +364,4 @@ internal class DolbyController private constructor(
                 instance ?: DolbyController(context).also { instance = it }
             }
     }
-
-    private fun clampVolumeLevelerAmount(value: Int) =
-        value.coerceIn(volumeLevelerMin, volumeLevelerMax)
-
-    private fun isParamSupported(param: DsParam): Boolean {
-        return paramSupportCache.getOrPut(param) {
-            try {
-                checkEffect()
-                dolbyEffect.getDapParameter(param, SUPPORT_PROBE_PROFILE)
-                true
-            } catch (e: IllegalArgumentException) {
-                Log.w(TAG, "Parameter $param is not supported: ${e.message}")
-                false
-            } catch (e: IllegalStateException) {
-                Log.w(TAG, "Parameter $param unavailable in current effect state: ${e.message}")
-                false
-            } catch (e: UnsupportedOperationException) {
-                Log.w(TAG, "Parameter $param not implemented by effect: ${e.message}")
-                false
-            } catch (e: RuntimeException) {
-                Log.w(TAG, "Parameter $param probe failed: ${e.message}")
-                false
-            }
-        }
-    }
-
-    fun isVolumeModelerSupported() = isParamSupported(DsParam.VOLUME_MODELER_ENABLE)
-
-    fun isAudioOptimizerSupported() = isParamSupported(DsParam.AUDIO_OPTIMIZER_ENABLE)
 }
