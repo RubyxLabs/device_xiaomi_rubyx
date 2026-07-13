@@ -27,7 +27,7 @@ internal class DolbyController private constructor(
     private val handler = Handler(context.mainLooper)
     private val stereoWideningSupported = context.getResources().getBoolean(R.bool.dolby_stereo_widening_supported)
 
-    // Restore current profile on every media session
+    // Keep the selected profile in sync when media playback starts
     private val playbackCallback = object : AudioPlaybackCallback() {
         override fun onPlaybackConfigChanged(configs: List<AudioPlaybackConfiguration>) {
             val isPlaying = configs.any {
@@ -39,7 +39,7 @@ internal class DolbyController private constructor(
         }
     }
 
-    // Restore current profile on audio device change
+    // Keep the selected profile in sync when the audio route changes
     private val audioDeviceCallback = object : AudioDeviceCallback() {
         override fun onAudioDevicesAdded(addedDevices: Array<AudioDeviceInfo>) {
             dlog(TAG, "onAudioDevicesAdded")
@@ -207,10 +207,11 @@ internal class DolbyController private constructor(
         dlog(TAG, "setCurrentProfile")
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val newProfile = prefs.getString(DolbyConstants.PREF_PROFILE, "0" /*dynamic*/)!!.toInt()
-        profile = newProfile
-        if (dsOn) {
-            dlog(TAG, "Reapplying stored settings for profile=$newProfile")
-            restoreSettings(newProfile)
+        checkEffect()
+        val currentProfile = dolbyEffect.profile
+        if (currentProfile != newProfile) {
+            dlog(TAG, "Switching profile from $currentProfile to $newProfile")
+            dolbyEffect.profile = newProfile
         }
     }
 
