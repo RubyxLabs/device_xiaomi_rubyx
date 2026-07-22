@@ -73,4 +73,4 @@ product                           /product               erofs  ro              
 /devices/platform/usb0*           auto                   vfat   defaults                                                                                                     voldmanaged=usbotg:auto
 
 # ZRAM
-/dev/block/zram0                  none                   swap   defaults                                                                                                     zramsize=55%
+/dev/block/zram0                  none                   swap   defaults                                                                                                     zramsize=60%
