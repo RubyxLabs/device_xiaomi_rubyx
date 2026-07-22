@@ -50,6 +50,10 @@ PRODUCT_PACKAGES += \
 # Always preopt extracted APKs to prevent extracting out of the APK for gms modules
 PRODUCT_ALWAYS_PREOPT_EXTRACTED_APK := true
 
+
+# Kernel
+PRODUCT_ENABLE_UFFD_GC := true
+
 # Audio
 TARGET_EXCLUDES_AUDIOFX := true
 
