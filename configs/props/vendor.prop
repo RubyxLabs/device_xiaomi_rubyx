@@ -174,14 +174,8 @@ ro.vendor.mtk_data_config=1
 ro.crypto.volume.filenames_mode=aes-256-cts
 ro.hardware.kmsetkey=beanpod
 
-# LMKD
-ro.lmk.kill_timeout_ms=100
-ro.lmk.psi_complete_stall_ms=70
-ro.lmk.psi_partial_stall_ms=35
-ro.lmk.swap_free_low_percentage=30
-ro.lmk.swap_util_max=90
-ro.lmk.thrashing_limit_decay=2
-ro.lmk.thrashing_limit=30
+# Memory
+ro.lmk.swap_compression_ratio=2
 
 # Media
 debug.mediatek.disp_decompress=1
@@ -273,8 +267,3 @@ ro.vendor.wifi.sap.concurrent.iface=ap1
 ro.vendor.wifi.sap.interface=ap0
 ro.vendor.wlan.chrdev=wmt_chrdev_wifi
 ro.vendor.wlan.gen=gen4m
-
-# ZRAM
-ro.zram.first_wb_delay_mins=1440
-ro.zram.mark_idle_delay_mins=60
-ro.zram.periodic_wb_delay_hours=24
