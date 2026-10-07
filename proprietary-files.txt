@@ -1433,7 +1433,7 @@ vendor/lib64/libcodec2_vpp_dolby_plugin.so
 vendor/lib64/libdolbyottcameracontrol.so
 vendor/lib64/libdolbyplugin.so
 vendor/lib64/libfiltersimulation.so
-vendor/lib64/libformatter.so
+vendor/lib64/libformatter.so:vendor/lib64/libformatter_mtk.so;FIX_SONAME
 vendor/lib64/libpowerhalwrap_vendor.so
 
 # Misc
