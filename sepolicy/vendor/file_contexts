@@ -11,6 +11,7 @@
 /vendor/lib(64)?/libarmnn(.*)?\.so u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libmpbase\.so u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libmialgoengine\.so u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libutils_mtk\.so u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libarcsoft_beautyshot\.so u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libarcsoft_super_night_raw\.so u:object_r:same_process_hal_file:s0
 /vendor/lib(64)?/libalCFR\.so u:object_r:same_process_hal_file:s0
