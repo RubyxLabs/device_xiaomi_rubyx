@@ -5,6 +5,9 @@ type camera_persist_file, file_type;
 # Display
 type vendor_sysfs_display, fs_type, sysfs_type;
 
+# DMA-BUF
+type vendor_dmabuf, fs_type;
+
 # Fingerprint
 type vendor_fingerprint_data_file, data_file_type, file_type;
 type vendor_sysfs_fingerprint, fs_type, sysfs_type;
