@@ -12,14 +12,13 @@ import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
-import android.widget.CompoundButton
-import android.widget.CompoundButton.OnCheckedChangeListener
+import android.os.Looper
 import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
 import androidx.preference.PreferenceCategory
-import androidx.preference.PreferenceFragment
+import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
 import co.aospa.dolby.xiaomi.DolbyConstants.Companion.PREF_BASS
@@ -39,8 +38,7 @@ import co.aospa.dolby.xiaomi.DolbyController
 import co.aospa.dolby.xiaomi.R
 import com.android.settingslib.widget.MainSwitchPreference
 
-class DolbySettingsFragment : PreferenceFragment(),
-    OnPreferenceChangeListener, CompoundButton.OnCheckedChangeListener {
+class DolbySettingsFragment : PreferenceFragmentCompat(), OnPreferenceChangeListener {
 
     private lateinit var switchBar: MainSwitchPreference
     private lateinit var profilePref: ListPreference
@@ -56,9 +54,9 @@ class DolbySettingsFragment : PreferenceFragment(),
     private lateinit var settingsCategory: PreferenceCategory
     private var stereoPref: SeekBarPreference? = null
 
-    private val dolbyController by lazy { DolbyController.getInstance(context) }
-    private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
-    private val handler = Handler()
+    private val dolbyController by lazy { DolbyController.getInstance(requireContext()) }
+    private val audioManager by lazy { requireContext().getSystemService(AudioManager::class.java) }
+    private val handler = Handler(Looper.getMainLooper())
 
     private var isOnSpeaker = true
         set(value) {
@@ -82,7 +80,8 @@ class DolbySettingsFragment : PreferenceFragment(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         dlog(TAG, "onCreatePreferences")
-        addPreferencesFromResource(R.xml.dolby_settings)
+        val context = requireContext()
+        setPreferencesFromResource(R.xml.dolby_settings, rootKey)
 
         settingsCategory = findPreference<PreferenceCategory>("dolby_category_settings")!!
         switchBar = findPreference<MainSwitchPreference>(PREF_ENABLE)!!
@@ -111,8 +110,8 @@ class DolbySettingsFragment : PreferenceFragment(),
         }
 
         val dsOn = dolbyController.dsOn
-        switchBar.addOnSwitchChangeListener(this)
         switchBar.isChecked = dsOn
+        switchBar.onPreferenceChangeListener = this
 
         profilePref.onPreferenceChangeListener = this
         profilePref.isEnabled = dsOn
@@ -174,6 +173,14 @@ class DolbySettingsFragment : PreferenceFragment(),
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
         dlog(TAG, "onPreferenceChange: key=${preference.key} value=$newValue")
         when (preference.key) {
+            PREF_ENABLE -> {
+                val isChecked = newValue as Boolean
+                dlog(TAG, "onCheckedChanged($isChecked)")
+                dolbyController.dsOn = isChecked
+                profilePref.isEnabled = isChecked
+                updateProfileSpecificPrefs()
+            }
+
             PREF_PROFILE -> {
                 val profile = newValue.toString().toInt()
                 dolbyController.profile = profile
@@ -218,19 +225,13 @@ class DolbySettingsFragment : PreferenceFragment(),
         return true
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        dlog(TAG, "onCheckedChanged($isChecked)")
-        dolbyController.dsOn = isChecked
-        profilePref.setEnabled(isChecked)
-        updateProfileSpecificPrefs()
-    }
-
     private fun updateSpeakerState() {
         val device = audioManager!!.getDevicesForAttributes(ATTRIBUTES_MEDIA)[0]
         isOnSpeaker = (device.type == AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
     }
 
     private fun updateProfileSpecificPrefs() {
+        val context = requireContext()
         val unknownRes = context.getString(R.string.dolby_unknown)
         val headphoneRes = context.getString(R.string.dolby_connect_headphones)
         val dsOn = dolbyController.dsOn
