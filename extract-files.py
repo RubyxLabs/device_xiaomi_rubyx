@@ -126,6 +126,13 @@ blob_fixups: blob_fixups_user_type = {
 
     'vendor/lib64/libmialgoengine.so': blob_fixup()
         .replace_needed('libutils.so', 'libutils_mtk.so'),
+
+    # Skip RefBase's CallStack dump and continue at the destructor cleanup.
+    'vendor/lib64/libutils_mtk.so': blob_fixup()
+        .sig_replace(
+            '68 00 00 B0 08 01 45 F9 88 04 00 B5',
+            '36 00 00 14',
+        ),
 }
 
 module = ExtractUtilsModule(
