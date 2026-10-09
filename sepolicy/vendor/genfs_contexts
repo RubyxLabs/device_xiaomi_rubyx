@@ -53,4 +53,5 @@ genfscon sysfs /devices/platform/15020000.imgsys_config/wakeup u:object_r:sysfs_
 genfscon sysfs /devices/platform/19030000.vpu_core0/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/19031000.vpu_core1/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/1a000000.camsys/wakeup u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/fingerprint/wakeup u:object_r:sysfs_wakeup:s0
 genfscon sysfs /devices/platform/usb0/wakeup u:object_r:sysfs_wakeup:s0
