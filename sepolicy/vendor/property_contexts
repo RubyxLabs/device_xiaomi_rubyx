@@ -8,6 +8,10 @@ ro.vendor.mtkcam.          u:object_r:vendor_camera_prop:s0
 # Charge
 persist.vendor.accelerate.charge u:object_r:vendor_batterysecret_prop:s0
 
+# Dolby
+ro.vendor.audio.dolby.dax.support u:object_r:vendor_mtk_audio_prop:s0 exact bool
+ro.vendor.dolby.dax.version u:object_r:vendor_mtk_audio_prop:s0 exact string
+
 # Fingerprint
 persist.vendor.sys.fp. u:object_r:vendor_fingerprint_prop:s0
 ro.hardware.fp u:object_r:vendor_fingerprint_prop:s0
