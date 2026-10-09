@@ -1388,6 +1388,9 @@ vendor/etc/init/microtrust.bp_kmsetkey_ca.rc
 vendor/lib/libladder.so
 vendor/lib64/libladder.so
 
+# Libutils
+system/lib64/libutils.so:vendor/lib64/libutils_mtk.so;FIX_SONAME
+
 # Media
 vendor/bin/vpud
 vendor/etc/init/vpud.rc
