@@ -1,0 +1,45 @@
+type hal_face_ruby, domain, coredomain;
+type hal_face_ruby_exec, exec_type, file_type, system_file_type;
+type hal_face_ruby_data_file, file_type, data_file_type, core_data_file_type;
+
+init_daemon_domain(hal_face_ruby)
+userfaultfd_use(hal_face_ruby)
+hal_server_domain(hal_face_ruby, hal_face)
+hal_client_domain(hal_face_ruby, hal_keymaster)
+hal_client_domain(hal_face_ruby, hal_graphics_allocator)
+hwbinder_use(hal_face_ruby)
+
+binder_call(hal_face_ruby, cameraserver)
+binder_call(cameraserver, hal_face_ruby)
+binder_call(hal_face_ruby, gatekeeperd)
+binder_call(hal_face_ruby, surfaceflinger)
+binder_call(hal_face_ruby, system_app)
+
+allow hal_face_ruby {
+    activity_service
+    appops_service
+    cameraserver_service
+    display_service
+    gatekeeper_service
+    package_service
+    permission_checker_service
+    surfaceflinger_service
+    user_service
+}:service_manager find;
+
+allow hal_face_ruby hal_face_ruby_data_file:dir create_dir_perms;
+allow hal_face_ruby hal_face_ruby_data_file:file create_file_perms;
+allow hal_face_ruby system_data_file:dir search;
+allow hal_face_ruby { gpu_device ion_device dmabuf_system_heap_device }:chr_file rw_file_perms;
+# ART/OpenCL may generate anonymous code; executable files remain on read-only partitions.
+allow hal_face_ruby self:process execmem;
+
+# This init-launched ART process needs the runtime setup normally done by zygote.
+allow hal_face_ruby apex_module_data_file:dir search;
+allow hal_face_ruby apex_info_file:file r_file_perms;
+allow hal_face_ruby mnt_expand_file:dir getattr;
+get_prop(hal_face_ruby, odsign_prop)
+get_prop(hal_face_ruby, build_attestation_prop)
+get_prop(hal_face_ruby, packagemanager_config_prop)
+get_prop(hal_face_ruby, qemu_sf_lcd_density_prop)
+r_dir_file(hal_face_ruby, dalvikcache_data_file)

@@ -4,6 +4,9 @@
 vendor/lib/libaedv.so
 vendor/lib64/libaedv.so
 
+# Face unlock SDK (consumed by face/extract.py, MIUI Application is not installed)
+product/app/Biometric/Biometric.apk;EXTRACT_ONLY
+
 # Audio
 vendor/etc/smartpa_param/AW_DSP.bin
 vendor/firmware/aw882xx_acf.bin

@@ -1,0 +1,2 @@
+/system_ext/bin/hw/android\.hardware\.biometrics\.face-service\.ruby u:object_r:hal_face_ruby_exec:s0
+/data/misc/ruby_face(/.*)? u:object_r:hal_face_ruby_data_file:s0

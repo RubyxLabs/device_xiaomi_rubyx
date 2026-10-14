@@ -19,6 +19,7 @@ from extract_utils.main import (
     ExtractUtils,
     ExtractUtilsModule,
 )
+from face.extract import extract_face_sdk
 
 namespace_imports = [
     'device/xiaomi/rubyx',
@@ -143,6 +144,7 @@ module = ExtractUtilsModule(
     namespace_imports=namespace_imports,
     add_firmware_proprietary_file=True,
 )
+module.add_postprocess_fn(lambda _: extract_face_sdk(module.vendor_path))
 
 if __name__ == '__main__':
     utils = ExtractUtils.device(module)

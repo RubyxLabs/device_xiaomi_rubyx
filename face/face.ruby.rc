@@ -1,0 +1,11 @@
+on post-fs-data
+    mkdir /data/misc/ruby_face 0700 system system
+    restorecon_recursive /data/misc/ruby_face
+
+# Use the preoptimized service DEX; this daemon cannot execute ART JIT files.
+service vendor.face-ruby /system_ext/bin/hw/android.hardware.biometrics.face-service.ruby -Xdeny-art-apex-data-files -Xusejit:false /system/bin --nice-name=ruby-face com.xiaomi.face.FaceService
+    class hal
+    user system
+    group system camera graphics input
+    setenv CLASSPATH /system_ext/framework/ruby-face-service-java.jar
+    interface aidl android.hardware.biometrics.face.IFace/default

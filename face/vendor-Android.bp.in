@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: Apache-2.0
+// Generated payloads come from device/xiaomi/rubyx/face/extract.py.
+dex_import {
+    name: "ruby-face-sdk",
+    owner: "xiaomi",
+    jars: ["proprietary/ruby-face-sdk.jar"],
+    system_ext_specific: true,
+}
+
+// Keep SDK-private libraries outside the partition-wide lib64 directory.
+// ART otherwise bypasses the classloader namespace for same-partition loads,
+// losing both this SDK's dependency search path and its public vendor OpenCL link.
+prebuilt_etc {
+    name: "ruby-face-engine",
+    owner: "xiaomi",
+    src: "proprietary/libstfaceunlockocl.so",
+    filename: "libstfaceunlockocl.so",
+    system_ext_specific: true,
+    relative_install_path: "ruby_face/lib64",
+}
+
+prebuilt_etc {
+    name: "ruby-face-sdk-jni",
+    owner: "xiaomi",
+    src: "proprietary/libjni_stfaceunlock_api.so",
+    filename: "libjni_stfaceunlock_api.so",
+    system_ext_specific: true,
+    relative_install_path: "ruby_face/lib64",
+}

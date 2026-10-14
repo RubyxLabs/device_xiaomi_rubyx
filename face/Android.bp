@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: Apache-2.0
+java_library {
+    name: "ruby-face-service-java",
+    srcs: ["src/**/*.java"],
+    static_libs: ["android.hardware.biometrics.face-V4-java"],
+    libs: ["framework"],
+    installable: true,
+    system_ext_specific: true,
+}
+
+cc_prebuilt_binary {
+    name: "android.hardware.biometrics.face-service.ruby",
+    // Reuse the platform ART launcher under a dedicated executable label.
+    // Its original module owns ELF/dependency checks and signal-chain linkage.
+    srcs: [":app_process"],
+    check_elf_files: false,
+    strip: { none: true },
+    compile_multilib: "64",
+    relative_install_path: "hw",
+    system_ext_specific: true,
+    init_rc: ["face.ruby.rc"],
+    required: ["ruby-face-service-java", "libruby_face_jni", "ruby-face-device-manifest"],
+}
+
+// This is a device-provided HAL. A fragment next to the system_ext launcher
+// would be incorrectly merged into the framework manifest by libvintf.
+prebuilt_etc {
+    name: "ruby-face-device-manifest",
+    src: "face.ruby.xml",
+    filename: "face.ruby.xml",
+    sub_dir: "vintf/manifest",
+    vendor: true,
+}
+
+cc_library_shared {
+    name: "libruby_face_jni",
+    srcs: ["CredentialVerifier.cpp"],
+    shared_libs: [
+        "android.hardware.keymaster@4.0",
+        "libandroid",
+        "libhidlbase",
+        "liblog",
+        "libnativewindow",
+        "libutils",
+    ],
+    header_libs: ["jni_headers"],
+    cflags: ["-Wall", "-Werror"],
+    compile_multilib: "64",
+    system_ext_specific: true,
+}
